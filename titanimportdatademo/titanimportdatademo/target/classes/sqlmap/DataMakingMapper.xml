@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.dao.DataMakingMapper">
+    <resultMap type="com.example.model.DataForTitan" id="DataForTitanResult">
+        <result column="C_SIP" property="C_SIP" jdbcType="BIGINT"/>
+        <result column="C_NETWORK" property="C_NETWORK" jdbcType="VARCHAR"/>
+        <result column="C_DIP" property="C_DIP" jdbcType="BIGINT"/>
+        <result column="C_USERID" property="C_USERID" jdbcType="VARCHAR"/>
+        <result column="C_DPORT" property="C_DPORT" jdbcType="INTEGER"/>
+        <result column="C_SPORT" property="C_SPORT" jdbcType="INTEGER"/>
+        <result column="C_TIME" property="C_TIME" jdbcType="BIGINT"/>
+        <result column="C_UA" property="C_UA" jdbcType="VARCHAR"/>
+        <result column="C_UUID" property="C_UUID" jdbcType="VARCHAR"/>
+        <result column="C_LOC" property="C_LOC" jdbcType="VARCHAR"/>
+        <result column="C_RSTIME" property="C_RSTIME" jdbcType="BIGINT"/>
+        <result column="C_TS" property="C_TS" jdbcType="BIGINT"/>
+        <result column="C_OMAC" property="C_OMAC" jdbcType="VARCHAR"/>
+        <result column="C_OIMEI" property="C_OIMEI" jdbcType="BIGINT"/>
+        <result column="C_RMAC" property="C_RMAC" jdbcType="VARCHAR"/>
+        <result column="C_RIMEI" property="C_RIMEI" jdbcType="BIGINT"/>
+        <result column="C_OZID" property="C_OZID" jdbcType="VARCHAR"/>
+        <result column="C_RZID" property="C_RZID" jdbcType="VARCHAR"/>
+        <result column="C_OUID" property="C_OUID" jdbcType="VARCHAR"/>
+        <result column="C_RUID" property="C_RUID" jdbcType="VARCHAR"/>
+        <result column="C_DGST" property="C_DGST" jdbcType="VARCHAR"/>
+        <result column="C_T" property="C_T" jdbcType="VARCHAR"/>
+        <result column="C_N" property="C_N" jdbcType="VARCHAR"/>
+        <result column="C_HMD5" property="C_HMD5" jdbcType="VARCHAR"/>
+        <result column="C_PKG" property="C_PKG" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <select id="selectAll" resultMap="DataForTitanResult">
+        SELECT  * FROM titan_data WHERE C_SIP = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insertItem" parameterType="com.example.model.DataForTitan">
+        INSERT INTO titan_data
+        VALUES (#{C_SIP} ,#{C_NETWORK} ,#{C_DIP} ,#{C_USERID} ,#{C_DPORT} ,#{C_SPORT} ,#{C_TIME} ,#{C_UA} ,#{C_UUID} ,#{C_LOC} ,#{C_RSTIME} ,#{C_TS} ,#{C_OMAC} ,#{C_OIMEI} ,#{C_RMAC} ,#{C_RIMEI} ,#{C_OZID} ,#{C_RZID} ,#{C_OUID} ,#{C_RUID} ,#{C_DGST} ,#{C_T} ,#{C_N} ,#{C_HMD5} ,#{C_PKG})
+    </insert>
+    <update id="modifyRIMEI">
+        UPDATE titan_data SET C_RIMEI = #{recvImei} WHERE C_OIMEI = #{sendImei}
+    </update>
+    <update id="modifyMd5">
+        UPDATE titan_data SET C_HMD5 = #{newMd5} WHERE C_OIMEI = #{sendImei}
+    </update>
+</mapper>

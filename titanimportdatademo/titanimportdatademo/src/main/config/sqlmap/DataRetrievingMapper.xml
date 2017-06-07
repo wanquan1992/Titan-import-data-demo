@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.dao.DataRetrievingMapper">
+    <resultMap type="com.example.model.EdgeDto" id="EdgeListResult">
+        <result column="C_OIMEI" property="c_oimei" jdbcType="BIGINT"/>
+        <result column="C_RIMEI" property="c_rimei" jdbcType="BIGINT"/>
+        <result column="C_DGST" property="c_dgst" jdbcType="VARCHAR"/>
+        <result column="C_T" property="c_t" jdbcType="VARCHAR"/>
+        <result column="C_N" property="c_n" jdbcType="VARCHAR"/>
+        <result column="C_HMD5" property="c_hmd5" jdbcType="VARCHAR"/>
+        <result column="C_PKG" property="c_pkg" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap type="com.example.model.VertexDto" id="VetexListResult">
+        <result column="C_SIP" property="c_ip" jdbcType="VARCHAR"/>
+        <result column="C_NETWORK" property="c_network" jdbcType="VARCHAR"/>
+        <result column="C_USERID" property="c_userid" jdbcType="VARCHAR"/>
+        <result column="C_SPORT" property="c_port" jdbcType="VARCHAR"/>
+        <result column="C_TIME" property="c_time" jdbcType="VARCHAR"/>
+        <result column="C_UA" property="c_ua" jdbcType="VARCHAR"/>
+        <result column="C_UUID" property="c_uuid" jdbcType="VARCHAR"/>
+        <result column="C_LOC" property="c_loc" jdbcType="VARCHAR"/>
+        <result column="C_OMAC" property="c_mac" jdbcType="VARCHAR"/>
+        <result column="IMEI" property="c_imei" jdbcType="VARCHAR"/>
+        <result column="C_OZID" property="c_zid" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getDataForCreatingEdges" resultMap="EdgeListResult">
+        SELECT C_OIMEI, C_RIMEI, C_DGST, C_T, C_N, C_HMD5, C_PKG FROM titan_data
+    </select>
+    <select id="getDataForCreatingVertex" resultMap="VetexListResult">
+        SELECT titan_data.C_OIMEI AS IMEI, C_SIP, C_NETWORK, C_USERID, C_SPORT, C_TIME, C_UA, C_UUID, C_LOC, C_OMAC, C_OZID FROM titan_data WHERE titan_data.C_OIMEI IN
+        (SELECT DISTINCT titan_data.C_OIMEI FROM titan_data UNION SELECT DISTINCT titan_data.C_RIMEI FROM titan_data);
+    </select>
+    <select id="getDataForCreatingEdgesBatch" resultMap="EdgeListResult">
+        SELECT C_OIMEI, C_RIMEI, C_DGST, C_T, C_N, C_HMD5, C_PKG FROM titan_data limit #{startPos}, #{size}
+    </select>
+    <select id="getDataForCreatingVertexBatch" resultMap="VetexListResult">
+        SELECT  DISTINCT titan_data.C_OIMEI AS IMEI, C_SIP, C_NETWORK, C_USERID, C_SPORT, C_TIME, C_UA,
+        C_UUID, C_LOC, C_OMAC, C_OZID FROM titan_data limit #{startPos}, #{size}
+    </select>
+</mapper>
